@@ -1,13 +1,17 @@
 package services
 
-import javax.inject.Inject
+import javax.inject.{Inject, Singleton}
 import play.api.{Configuration, Logger}
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
-class ApiClient @Inject()(wsClient: WSClient, configuration: Configuration) {
+@Singleton
+class ApiClient @Inject()(
+                           wsClient: WSClient,
+                           configuration: Configuration,
+                         )(implicit ec: ExecutionContext) {
 
   private val logger = Logger(this.getClass)
   private val apiUrl = configuration.get[String]("shopCouponDeliverer.apiUrl")
