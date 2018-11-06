@@ -1,5 +1,7 @@
-@()
+@import play.api.libs.json.JsValue
+
+@(coupons: JsValue)
 
 @main("Welcome to Play") {
-  <h1>Welcome to Play!</h1>
+  @coupons
 }
