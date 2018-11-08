@@ -29,8 +29,13 @@ class ApiClient @Inject()(
 
   private def access(block: => WSRequest): Future[WSResponse] = {
     val request = block
-    logger.info(s"access: ${request.method} ${request.uri} ${request.headers}")
-    request.addHttpHeaders("x-api-key" -> apiKey).execute()
+    logger.info(s"request: ${request.method} ${request.uri} ${request.headers}")
+    request.addHttpHeaders("x-api-key" -> apiKey).execute() map { response =>
+      if (Seq(4, 5) contains response.status / 100) {
+        logger.info(s"error_response: ${response.status} ${response.headers}")
+      }
+      response
+    }
   }
 
 }
