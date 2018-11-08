@@ -14,9 +14,9 @@ class HomeController @Inject()(
 
   private implicit val ec: ExecutionContext = defaultExecutionContext
 
-  def index(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    apiClient.queryCoupons()
-      .map(views.html.index(_))
+  def index(page: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    apiClient.queryCoupons(page)
+      .map(views.html.index(_, page))
       .map(Ok(_))
   }
 }

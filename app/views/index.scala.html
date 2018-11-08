@@ -1,4 +1,4 @@
-@(coupons: Seq[Coupon])
+@(coupons: Seq[Coupon], page: Int)
 
 @main {
   <table class="table">
@@ -19,4 +19,9 @@
     </tr>
   }
   </table>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="@routes.HomeController.index(page - 1).url">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="@routes.HomeController.index(page + 1).url">Next</a></li>
+    </ul>
 }
