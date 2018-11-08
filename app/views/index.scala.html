@@ -1,7 +1,22 @@
-@import play.api.libs.json.JsValue
-
 @(coupons: Seq[Coupon])
 
-@main("Welcome to Play") {
-  @coupons
+@main {
+  <table class="table">
+    <tr>
+      <th>id</th>
+      <th>title</th>
+      <th>description</th>
+      <th>image</th>
+      <th>qr_code_image</th>
+    </tr>
+  @for(coupon <- coupons) {
+    <tr>
+      <td>@coupon.id</td>
+      <td>@coupon.title</td>
+      <td>@coupon.description</td>
+      <td><img src="@coupon.image_url" style="max-height: 120px; max-width: 120px"></td>
+      <td><img src="@coupon.qr_code_image_url" style="max-height: 120px; max-width: 120px"></td>
+    </tr>
+  }
+  </table>
 }
