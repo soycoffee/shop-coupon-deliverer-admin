@@ -5,6 +5,7 @@ import play.api.mvc._
 import services.ApiClient
 
 import scala.concurrent.ExecutionContext
+import Function.tupled
 
 @Singleton
 class HomeController @Inject()(
@@ -16,7 +17,7 @@ class HomeController @Inject()(
 
   def index(page: Int): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     apiClient.queryCoupons(page)
-      .map(views.html.index(_, page))
+      .map(tupled(views.html.index(_, page, _)))
       .map(Ok(_))
   }
 }

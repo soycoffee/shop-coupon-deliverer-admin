@@ -1,4 +1,4 @@
-GET / controllers.HomeController.index(page: Int = 0)
+GET / controllers.HomeController.index(page: Int = 1)
 GET /page/:page controllers.HomeController.index(page: Int)
 
 GET /assets/*file controllers.Assets.versioned(path="/public", file: Asset)

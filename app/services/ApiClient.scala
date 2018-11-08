@@ -19,12 +19,13 @@ class ApiClient @Inject()(
   private val apiUrl = configuration.get[String]("shopCouponDeliverer.apiUrl")
   private val apiKey = configuration.get[String]("shopCouponDeliverer.apiKey")
 
-  def queryCoupons(page: Int): Future[Seq[Coupon]] =
-    access(
+  def queryCoupons(page: Int): Future[(Seq[Coupon], Int)] =
+    access {
       wsClient.url(apiUrl)
-        .addQueryStringParameters("page" -> page.toString),
-    )
-      .map(_.json.as[Seq[Coupon]])
+        .addQueryStringParameters("page" -> page.toString)
+    } map { response =>
+      (response.json.as[Seq[Coupon]], response.header("last-page").get.toInt)
+    }
 
   private def access(block: => WSRequest): Future[WSResponse] = {
     val request = block
