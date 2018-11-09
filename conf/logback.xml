@@ -38,4 +38,6 @@
     <appender-ref ref="ASYNCSTDOUT" />
   </root>
 
+  <logger name="services.ApiClient" level="INFO" />
+
 </configuration>

@@ -1,4 +1,6 @@
-GET / controllers.HomeController.index(page: Int = 1)
-GET /page/:page controllers.HomeController.index(page: Int)
+GET / controllers.CouponController.index(page: Int = 1)
+GET /page/:page controllers.CouponController.index(page: Int)
+GET /create controllers.CouponController.getCreate
+POST / controllers.CouponController.create
 
 GET /assets/*file controllers.Assets.versioned(path="/public", file: Asset)

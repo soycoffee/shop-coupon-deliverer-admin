@@ -1,0 +1,26 @@
+@(form: Form[FormCoupon])(implicit request: RequestHeader, messages: Messages)
+
+@generateImageInput(id: String) = {
+  <dl>
+    <dt><label for="@{id}_file">@id</label></dt>
+    <dd><input type="file" id="@{id}_file" name="@{id}_file" class="form-control-file" accept="image/*" onchange="attachImage(this, '@id')"></dd>
+  </dl>
+  <input type="hidden" id="@id" name="@id">
+}
+
+@main {
+  <div class="card">
+    <div class="card-body">
+      @helper.form(action = routes.CouponController.create) {
+        @helper.CSRF.formField
+        @helper.inputText(form("title"), 'class -> "form-control")
+        @helper.textarea(form("description"), 'class -> "form-control")
+        @generateImageInput("image")
+        @generateImageInput("qr_code_image")
+        <button class="btn btn-primary" type="submit">Submit</button>
+      }
+    </div>
+  </div>
+}
+
+<script src="@routes.Assets.versioned("javascripts/getCreate.js")"></script>
