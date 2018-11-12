@@ -58,7 +58,7 @@ class ApiClient @Inject()(
     request.addHttpHeaders("x-api-key" -> apiKey).execute() map { response =>
       response.status / 100 match {
         case 4 | 5 => logger.info(s"error_response: ${response.status} ${response.headers} ${response.body}")
-        case _ =>
+        case _ => logger.info(s"response: ${response.status} ${response.headers}")
       }
       response
     }
