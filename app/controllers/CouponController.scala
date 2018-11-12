@@ -39,8 +39,8 @@ class CouponController @Inject()(
   }
 
   def create: Action[FormCoupon] = Action.async(parse.form(form)) { request =>
-    apiClient.createCoupon(request.body) map { _ =>
-      Redirect(routes.CouponController.index(None))
+    apiClient.createCoupon(request.body) map { coupon =>
+      Redirect(routes.CouponController.read(coupon.id))
     }
   }
 
