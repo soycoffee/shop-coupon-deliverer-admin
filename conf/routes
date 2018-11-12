@@ -1,7 +1,7 @@
 GET / controllers.CouponController.index(pageKey: Option[String])
 GET /create controllers.CouponController.getCreate
 POST / controllers.CouponController.create
+GET /$id<[0-9]+> controllers.CouponController.read(id: String)
 GET /search controllers.CouponController.read(id: String)
-GET /:id controllers.CouponController.read(id: String)
 
 GET /assets/*file controllers.Assets.versioned(path="/public", file: Asset)
