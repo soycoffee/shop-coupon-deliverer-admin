@@ -10,7 +10,7 @@
   </tr>
   @for(coupon <- coupons) {
     <tr>
-      <td>@coupon.id</td>
+      <td><a href="@routes.CouponController.read(coupon.id)">@coupon.id</a></td>
       <td>@coupon.title</td>
       <td>@coupon.description</td>
       <td><img src="@coupon.image_url" style="max-height: 120px;
