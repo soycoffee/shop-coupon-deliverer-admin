@@ -8,7 +8,6 @@ case class Coupon(
                    description: String,
                    image_url: String,
                    qr_code_image_url: String,
-                   page: Int,
                  )
 
 object Coupon {

@@ -1,5 +1,4 @@
-GET / controllers.CouponController.index(page: Int = 1)
-GET /page/:page controllers.CouponController.index(page: Int)
+GET / controllers.CouponController.index(pageKey: Option[String])
 GET /create controllers.CouponController.getCreate
 POST / controllers.CouponController.create
 

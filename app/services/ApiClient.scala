@@ -31,13 +31,13 @@ class ApiClient @Inject()(
       response.json.as[CreatedCoupon]
     }
 
-  def queryCoupons(page: Int): Future[(Seq[Coupon], Int)] =
+  def queryCoupons(lastEvaluatedKey: Option[String]): Future[(Seq[Coupon], Option[String])] =
     access {
       wsClient.url(apiUrl)
         .withMethod("GET")
-        .addQueryStringParameters("page" -> page.toString)
+        .addHttpHeaders(lastEvaluatedKey.map("Last-Evaluated-Key"  -> _).toList: _*)
     } map { response =>
-      (response.json.as[Seq[Coupon]], response.header("last-page").get.toInt)
+      (response.json.as[Seq[Coupon]], response.header("Last-Evaluated-Key"))
     }
 
   private def access(block: => WSRequest): Future[WSResponse] = {

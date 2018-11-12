@@ -28,9 +28,9 @@ class CouponController @Inject()(
     )(FormCoupon.apply)(FormCoupon.unapply)
   )
 
-  def index(page: Int): Action[AnyContent] = Action.async {
-    apiClient.queryCoupons(page) map tupled({ (coupons, lastPage) =>
-      Ok(views.html.index(coupons, page, lastPage))
+  def index(pageKey: Option[String]): Action[AnyContent] = Action.async {
+    apiClient.queryCoupons(pageKey) map tupled({ (coupons, nextPageKey) =>
+      Ok(views.html.index(coupons, nextPageKey))
     })
   }
 
@@ -39,8 +39,8 @@ class CouponController @Inject()(
   }
 
   def create: Action[FormCoupon] = Action.async(parse.form(form)) { request =>
-    apiClient.createCoupon(request.body) map { coupon =>
-      Redirect("")
+    apiClient.createCoupon(request.body) map { _ =>
+      Redirect(routes.CouponController.index(None))
     }
   }
 
