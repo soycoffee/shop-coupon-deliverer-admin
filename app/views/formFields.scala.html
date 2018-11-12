@@ -5,9 +5,9 @@
     <dt><label for="@{id}_file">@id</label></dt>
     <dd><input type="file" id="@{id}_file" name="@{id}_file" class="form-control-file" accept="image/*" onchange="attachImage(this, '@id', '@{id}_preview')"></dd>
   </dl>
-  <input type="hidden" id="@id" name="@id">
+  <input type="hidden" name="@id" id="@id" value="@form(id).value">
   <div>
-    <img id="@{id}_preview" src="">
+    <img id="@{id}_preview" src="@form(id).value">
   </div>
 }
 
