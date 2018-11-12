@@ -5,16 +5,18 @@ import models.FormCoupon
 import play.api.data._
 import play.api.i18n.{Lang, Messages, MessagesApi}
 import play.api.mvc._
-import services.ApiClient
+import services.{ApiClient, ImageUrlReader}
 
 import scala.Function.tupled
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
+
 @Singleton
 class CouponController @Inject()(
-                                cc: ControllerComponents,
-                                messagesApi: MessagesApi,
-                                apiClient: ApiClient,
-                              ) extends AbstractController(cc) {
+                                  cc: ControllerComponents,
+                                  messagesApi: MessagesApi,
+                                  apiClient: ApiClient,
+                                  imageUrlReader: ImageUrlReader,
+                                ) extends AbstractController(cc) {
 
   private implicit val ec: ExecutionContext = defaultExecutionContext
   private implicit val messages: Messages = messagesApi.preferred(Seq(Lang("en")))
@@ -56,11 +58,22 @@ class CouponController @Inject()(
     Ok(views.html.getCreate(form))
   }
 
-  def getUpdate(id: String): Action[AnyContent] = Action { implicit request =>
-//    apiClient.readCoupon(id) map { coupon =>
-//      Ok(views.html.read(coupon))
-//    }
-    Ok(views.html.getUpdate(id, form))
+  def getUpdate(id: String): Action[AnyContent] = Action.async { implicit request =>
+    apiClient.readCoupon(id) flatMap {
+      case Some(coupon) =>
+        for {
+          imageDataUrl <- imageUrlReader(coupon.image_url)
+          qrCodeImageDataUrl <- imageUrlReader(coupon.qr_code_image_url)
+        } yield {
+          Ok(views.html.getUpdate(id, form.fill(FormCoupon(
+            coupon.title,
+            coupon.description,
+            imageDataUrl,
+            qrCodeImageDataUrl,
+          ))))
+        }
+      case None => Future.successful(NotFound)
+    }
   }
 
 }
