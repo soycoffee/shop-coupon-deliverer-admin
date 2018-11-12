@@ -1,7 +1,8 @@
 package services
 
 import javax.inject.{Inject, Singleton}
-import models.{Coupon, FormCoupon, CreatedCoupon}
+import models.{Coupon, CreatedCoupon, FormCoupon}
+import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
 import play.api.{Configuration, Logger}
@@ -29,6 +30,17 @@ class ApiClient @Inject()(
         .withBody(Json.toJson(formCoupon))
     } map { response =>
       response.json.as[CreatedCoupon]
+    }
+
+  def readCoupon(id: String): Future[Option[Coupon]] =
+    access {
+      wsClient.url(s"$apiUrl/$id")
+        .withMethod("GET")
+    } map { response =>
+      response.status match {
+        case Status.NOT_FOUND => None
+        case _ => Some(response.json.as[Coupon])
+      }
     }
 
   def queryCoupons(lastEvaluatedKey: Option[String]): Future[(Seq[Coupon], Option[String])] =

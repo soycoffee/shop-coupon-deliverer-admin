@@ -1,43 +1,16 @@
 @(coupons: Seq[Coupon], nextPageKey: Option[String])
 
 @main {
-  <span>
-    <a class="btn" href="@routes.CouponController.getCreate">Create</a>
-  </span>
-  <nav>
-    <ul class="pagination justify-content-center">
-      @nextPageKey match {
-        case Some(key) => {
-          <li class="page-item">
-            <a class="page-link" href="@routes.CouponController.index(nextPageKey).url">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-          </li>
-        }
-        case None => {
-          <li class="page-item disabled">
-            <span class="page-link" aria-hidden="true">&raquo;</span>
-          </li>
-        }
+  @views.html.navbar()
+  <nav class="nav justify-content-end">
+    @nextPageKey match {
+      case Some(key) => {
+        <a class="nav-item nav-link" href="@routes.CouponController.index(nextPageKey).url">Next</a>
       }
-    </ul>
+      case None => {
+        <a class="nav-item nav-link disabled" href="#">Next</a>
+      }
+    }
   </nav>
-  <table class="table">
-    <tr>
-      <th>id</th>
-      <th>title</th>
-      <th>description</th>
-      <th>image</th>
-      <th>qr_code_image</th>
-    </tr>
-  @for(coupon <- coupons) {
-    <tr>
-      <td>@coupon.id</td>
-      <td>@coupon.title</td>
-      <td>@coupon.description</td>
-      <td><img src="@coupon.image_url" style="max-height: 120px; max-width: 120px"></td>
-      <td><img src="@coupon.qr_code_image_url" style="max-height: 120px; max-width: 120px"></td>
-    </tr>
-  }
-  </table>
+  @views.html.couponsTable(coupons)
 }

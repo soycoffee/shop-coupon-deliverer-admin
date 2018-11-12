@@ -44,4 +44,10 @@ class CouponController @Inject()(
     }
   }
 
+  def read(id: String): Action[AnyContent] = Action.async { implicit request =>
+    apiClient.readCoupon(id) map { coupon =>
+      Ok(views.html.read(coupon))
+    }
+  }
+
 }
