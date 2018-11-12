@@ -22,7 +22,7 @@ class CouponController @Inject()(
   val form = Form(
     Forms.mapping(
       "title" -> Forms.nonEmptyText,
-      "description" -> Forms.text,
+      "description" -> Forms.nonEmptyText,
       "image" -> Forms.nonEmptyText,
       "qr_code_image" -> Forms.nonEmptyText,
     )(FormCoupon.apply)(FormCoupon.unapply)
@@ -32,10 +32,6 @@ class CouponController @Inject()(
     apiClient.queryCoupons(pageKey) map tupled({ (coupons, nextPageKey) =>
       Ok(views.html.index(coupons, nextPageKey))
     })
-  }
-
-  def getCreate: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.getCreate(form))
   }
 
   def create: Action[FormCoupon] = Action.async(parse.form(form)) { request =>
@@ -48,6 +44,23 @@ class CouponController @Inject()(
     apiClient.readCoupon(id) map { coupon =>
       Ok(views.html.read(coupon))
     }
+  }
+
+  def update(id: String): Action[FormCoupon] = Action.async(parse.form(form)) { request =>
+    apiClient.updateCoupon(id, request.body) map { coupon =>
+      Redirect(routes.CouponController.read(coupon.id))
+    }
+  }
+
+  def getCreate: Action[AnyContent] = Action { implicit request =>
+    Ok(views.html.getCreate(form))
+  }
+
+  def getUpdate(id: String): Action[AnyContent] = Action { implicit request =>
+//    apiClient.readCoupon(id) map { coupon =>
+//      Ok(views.html.read(coupon))
+//    }
+    Ok(views.html.getUpdate(id, form))
   }
 
 }

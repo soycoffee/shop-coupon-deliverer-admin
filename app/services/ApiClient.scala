@@ -43,6 +43,15 @@ class ApiClient @Inject()(
       }
     }
 
+  def updateCoupon(id: String, formCoupon: FormCoupon): Future[CreatedCoupon] =
+    access {
+      wsClient.url(s"$apiUrl/$id")
+        .withMethod("PUT")
+        .withBody(Json.toJson(formCoupon))
+    } map { response =>
+      response.json.as[CreatedCoupon]
+    }
+
   def queryCoupons(lastEvaluatedKey: Option[String]): Future[(Seq[Coupon], Option[String])] =
     access {
       wsClient.url(apiUrl)

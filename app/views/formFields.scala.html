@@ -1,0 +1,18 @@
+@(form: Form[FormCoupon])(implicit request: RequestHeader, messages: Messages)
+
+@generateImageInput(id: String) = {
+  <dl>
+    <dt><label for="@{id}_file">@id</label></dt>
+    <dd><input type="file" id="@{id}_file" name="@{id}_file" class="form-control-file" accept="image/*" onchange="attachImage(this, '@id', '@{id}_preview')"></dd>
+  </dl>
+  <input type="hidden" id="@id" name="@id">
+  <div>
+    <img id="@{id}_preview" src="">
+  </div>
+}
+
+@helper.CSRF.formField
+@helper.inputText(form("title"), 'class -> "form-control")
+@helper.textarea(form("description"), 'class -> "form-control")
+@generateImageInput("image")
+@generateImageInput("qr_code_image")

@@ -1,12 +1,12 @@
-function attachImage(fileInput, destinationId) {
+function attachImage(fileInput, destinationId, previewId) {
     console.log(fileInput.files);
     const fileReader = new FileReader();
     fileReader.onload = () => {
         const dataUrl = fileReader.result;
-        const splitter = dataUrl.indexOf(',');
-        const encodedImage = dataUrl.slice(splitter + 1);
         const destination = document.getElementById(destinationId);
-        destination.value = encodedImage;
+        destination.value = dataUrl;
+        const preview = document.getElementById(previewId);
+        preview.src = dataUrl;
     };
     fileReader.readAsDataURL(fileInput.files[0])
 }

@@ -1,10 +1,10 @@
-@(form: Form[FormCoupon])(implicit request: RequestHeader, messages: Messages)
+@(id: String, form: Form[FormCoupon])(implicit request: RequestHeader, messages: Messages)
 
 @main {
   @views.html.navbar()
   <div class="card">
     <div class="card-body">
-      @helper.form(action = routes.CouponController.create) {
+      @helper.form(action = routes.CouponController.update(id)) {
         @views.html.formFields(form)
         <button class="btn btn-primary" type="submit">Submit</button>
       }
