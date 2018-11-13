@@ -39,5 +39,6 @@
   </root>
 
   <logger name="services.ApiClient" level="INFO" />
+  <logger name="services.ImageUrlReader" level="INFO" />
 
 </configuration>

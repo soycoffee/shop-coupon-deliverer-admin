@@ -1,6 +1,7 @@
 package services
 
 import javax.inject.{Inject, Singleton}
+import play.api.Logger
 import play.api.libs.ws.WSClient
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -10,9 +11,13 @@ class ImageUrlReader @Inject()(
                            wsClient: WSClient,
                          )(implicit ec: ExecutionContext) {
 
-  def apply(url: String): Future[String] =
-    wsClient.url(url).get() map { response =>
+  private val logger = Logger(this.getClass)
+
+  def apply(url: String): Future[String] = {
+    logger.info(s"request: $url")
+    wsClient.url(url).addHttpHeaders("Accept" -> "image/*").get() map { response =>
       s"data:${response.header("Content-Type").get};base64,${response.body}"
     }
+  }
 
 }
