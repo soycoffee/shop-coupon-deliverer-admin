@@ -54,6 +54,13 @@ class CouponController @Inject()(
     }
   }
 
+  def delete(id: String): Action[AnyContent] = Action.async {
+    apiClient.deleteCoupon(id) map {
+      case Some(_) => Redirect(routes.CouponController.index(None))
+      case None => NotFound
+    }
+  }
+
   def getCreate: Action[AnyContent] = Action { implicit request =>
     Ok(views.html.getCreate(form))
   }

@@ -52,6 +52,17 @@ class ApiClient @Inject()(
       response.json.as[CreatedCoupon]
     }
 
+  def deleteCoupon(id: String): Future[Option[Unit]] =
+    access {
+      wsClient.url(s"$apiUrl/$id")
+        .withMethod("DELETE")
+    } map { response =>
+      response.status match {
+        case Status.NOT_FOUND => None
+        case _ => Some()
+      }
+    }
+
   def queryCoupons(lastEvaluatedKey: Option[String]): Future[(Seq[Coupon], Option[String])] =
     access {
       wsClient.url(apiUrl)

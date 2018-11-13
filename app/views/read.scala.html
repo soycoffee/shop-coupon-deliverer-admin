@@ -6,6 +6,7 @@
   @for(_coupon <- coupon) {
     <nav class="nav">
       <a class="nav-item nav-link" href="@routes.CouponController.getUpdate(_coupon.id).url">Update</a>
+      <a class="nav-item nav-link" href="@routes.CouponController.delete(_coupon.id).url">Delete</a>
     </nav>
   }
 }

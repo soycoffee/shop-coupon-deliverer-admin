@@ -2,6 +2,7 @@ GET / controllers.CouponController.index(pageKey: Option[String])
 POST / controllers.CouponController.create
 GET /$id<[0-9]+> controllers.CouponController.read(id: String)
 POST /$id<[0-9]+> controllers.CouponController.update(id: String)
+GET /delete/$id<[0-9]+> controllers.CouponController.delete(id: String)
 GET /create controllers.CouponController.getCreate
 GET /update/$id<[0-9]+> controllers.CouponController.getUpdate(id: String)
 GET /search controllers.CouponController.read(id: String)
