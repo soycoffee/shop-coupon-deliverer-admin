@@ -3,7 +3,7 @@
 @generateImageInput(id: String) = {
   <dl>
     <dt><label for="@{id}_file">@id</label></dt>
-    <dd><input type="file" id="@{id}_file" name="@{id}_file" class="form-control-file" accept="image/*" onchange="attachImage(this, '@id', '@{id}_preview')"></dd>
+    <dd><input type="file" id="@{id}_file" name="@{id}_file" class="form-control-file" accept="image/gif,image/jpeg,image/png" onchange="attachImage(this, '@id', '@{id}_preview')"></dd>
   </dl>
   <input type="hidden" name="@id" id="@id" value="@form(id).value">
   <div>
