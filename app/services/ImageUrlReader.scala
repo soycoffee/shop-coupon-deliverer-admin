@@ -16,7 +16,9 @@ class ImageUrlReader @Inject()(
   def apply(url: String): Future[String] = {
     logger.info(s"request: $url")
     wsClient.url(url).addHttpHeaders("Accept" -> "image/*").get() map { response =>
-      s"data:${response.header("Content-Type").get};base64,${response.body}"
+      val contentType = response.header("Content-Type").get
+      val encodedBody = java.util.Base64.getEncoder.encodeToString(response.body[Array[Byte]])
+      s"data:$contentType;base64,$encodedBody"
     }
   }
 
