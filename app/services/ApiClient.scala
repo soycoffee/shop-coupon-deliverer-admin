@@ -59,7 +59,7 @@ class ApiClient @Inject()(
     } map { response =>
       response.status match {
         case Status.NOT_FOUND => None
-        case _ => Some()
+        case _ => Some(())
       }
     }
 
