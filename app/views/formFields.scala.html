@@ -1,18 +1,37 @@
 @(form: Form[FormCoupon])(implicit request: RequestHeader, messages: Messages)
 
+@imageRequired(id: String) = @{
+  form(id).value.fold("required")(_ => "")
+}
+
 @generateImageInput(id: String) = {
   <dl>
     <dt><label for="@{id}_file">@id</label></dt>
-    <dd><input type="file" id="@{id}_file" name="@{id}_file" class="form-control-file" accept="image/gif,image/jpeg,image/png" onchange="attachImage(this, '@id', '@{id}_preview')"></dd>
+    <dd><input
+      type="file"
+      id="@{id}_file"
+      name="@{id}_file"
+      class="form-control-file"
+      accept="image/gif,image/jpeg,image/png"
+      onchange="attachImage(this, '@id', '@{id}_preview')"
+      @imageRequired(id)
+    ></dd>
   </dl>
-  <input type="hidden" name="@id" id="@id" value="@form(id).value">
+  @form(id).value match {
+    case Some(value) => {
+      <input type="hidden" name="@id" id="@id" value="@form(id).value" required>
+    }
+    case None => {
+      <input type="hidden" name="@id" id="@id" required>
+    }
+  }
   <div>
     <img id="@{id}_preview" src="@form(id).value">
   </div>
 }
 
 @helper.CSRF.formField
-@helper.inputText(form("title"), 'class -> "form-control")
-@helper.textarea(form("description"), 'class -> "form-control")
+@helper.inputText(form("title"), 'class -> "form-control", 'required -> true)
+@helper.textarea(form("description"), 'class -> "form-control", 'required -> true)
 @generateImageInput("image")
 @generateImageInput("qr_code_image")
