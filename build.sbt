@@ -3,6 +3,13 @@ organization := "com.example"
 
 version := "1.0-SNAPSHOT"
 
+packageName in Universal := name.value
+packageName in Universal := {
+  new java.text.SimpleDateFormat("yyyyMMddHHmmss") format new java.util.Date()
+}
+
+mappings in Universal += file("Procfile") -> "Procfile"
+
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.12.6"
