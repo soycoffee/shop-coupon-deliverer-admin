@@ -1,4 +1,4 @@
-name := """shop-coupon-deliverer-demo"""
+name := """shop-coupon-deliverer-admin"""
 organization := "com.example"
 
 version := "1.0-SNAPSHOT"
